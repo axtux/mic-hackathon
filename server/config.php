@@ -12,6 +12,7 @@ define('UPLOAD_MAX', 5 * 1024 * 1024); //20 MiB
 try {
 	$db = getDb();
 	$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch (Exception $e) {
 	die('db oops');
