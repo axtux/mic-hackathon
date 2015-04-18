@@ -8,6 +8,7 @@ else
 
 define('UPLOAD_DIR', SITE_ROOT.'/uploads');
 define('UPLOAD_MAX', 5 * 1024 * 1024); //20 MiB
+$UPLOAD_FORBIDDEN = explode(',', 'exe,scr,bat,pif,com');
 
 try {
 	$db = getDb();

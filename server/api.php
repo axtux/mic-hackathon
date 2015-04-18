@@ -7,27 +7,29 @@ $fields = array(
 	'url' => array('link'),
 	'file'); //test this
 
-function fromPost($k) {
+function read_post($k) {
 	return $_POST[$k];
 }
 
-function doUpdate() {
+function add_improvement($original, $new) {
 	global $db;
-	$st = $db->prepare('INSERT INTO edge VALUES(?, '.doInsert().', \'improvement\')');
-	$st->execute(array($_POST['id_node']));
+	$st = $db->prepare('INSERT INTO edge VALUES(?, ?, ?)');
+	$st->execute(array($original, $new, 'improvement'));
 }
 
-function doInsert() {
+function do_update() {
+	add_improvement($_POST['id_node'], do_insert());
+}
+
+function do_insert() {
 	global $db, $fields;
-	$st = $db->prepare('INSERT INTO node(name, description, owner) VALUES(?, ?, ?)');
-	$st->execute(array($_POST['name'], $_POST['description'], current_user()));
-	$id = $db->lastInsertId();
+	$id = create_node($_POST['name'], $_POST['description']);
 	foreach ($fields as $k=>$v) {
 		if (in_array($v[0], array_keys($_POST)) && $k!='node') {
 			$sql = "INSERT INTO $k(".join(', ', array('id_node')+$v).') VALUES(';
 			$sql .= join(', ', array_fill(0, sizeof($v), '?')).')';
 			$st = $db->prepare($sql);
-			$st->execute(array($id)+array_map('fromPost', $v));
+			$st->execute(array($id)+array_map('read_post', $v));
 			return $db->lastInsertId();
 		}
 	}
@@ -38,18 +40,24 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); //FIXME
 switch ($_SERVER['REQUEST_METHOD']) {
 case 'GET':
-	$id_node = (int)$_GET['id_node'];
-	$sql = 'SELECT y.* FROM ('.
-		'SELECT NULL AS alpha, NULL AS beta, NULL AS relation, x.* '.
-		'FROM bignode x WHERE id_node=? UNION ALL '.
-		'SELECT * FROM edge INNER JOIN bignode x ON '.
-		'alpha=x.id_node WHERE beta=? UNION ALL '.
-		'SELECT * FROM edge INNER JOIN bignode x ON '.
-		'beta=x.id_node WHERE alpha=?'.
-		') y INNER JOIN profile u ON ?=u.id_node ';
-		//'WHERE y.is_deleted=u.is_omniscient';
-	$st = $db->prepare($sql);
-	$st->execute(array($id_node, $id_node, $id_node, current_user()));
+	if (isset($_GET['search'])) {
+		$st = $db->prepare('SELECT id_node, name FROM node WHERE name LIKE ?');
+		$st->execute(array($_GET['search'].'%'));
+	}
+	else {
+		$id_node = (int)$_GET['id_node'];
+		$sql = 'SELECT y.* FROM ('.
+			'SELECT NULL AS alpha, NULL AS beta, NULL AS relation, x.* '.
+			'FROM bignode x WHERE id_node=? UNION ALL '.
+			'SELECT * FROM edge INNER JOIN bignode x ON '.
+			'alpha=x.id_node WHERE beta=? UNION ALL '.
+			'SELECT * FROM edge INNER JOIN bignode x ON '.
+			'beta=x.id_node WHERE alpha=?'.
+			') y INNER JOIN profile u ON ?=u.id_node ';
+			//'WHERE y.is_deleted=u.is_omniscient';
+		$st = $db->prepare($sql);
+		$st->execute(array($id_node, $id_node, $id_node, current_user()));
+	}
 	echo json_encode($st->fetchAll());
 	break;
 case 'POST':
@@ -66,11 +74,20 @@ case 'POST':
 	else {
 		$db->beginTransaction();
 		try {
-			if (isset($_POST['id_node']))
-				doUpdate();
+			if (isset($_FILES['file'])) {
+				$id = do_upload('file', $_POST['name'], $_POST['description']);
+				if (isset($_POST['id_node']))
+					add_improvement($_POST['id_node'], $id);
+			}
+			else if (isset($_POST['id_node']))
+				do_update();
 			else
-				doInsert();
+				do_insert();
 			$db->commit();
+		}
+		catch (UploadException $e) {
+			$db->rollBack();
+			die($e);
 		}
 		catch (PDOException $pe) {
 			$db->rollBack();
