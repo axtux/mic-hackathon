@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+    
+    <style type="text/css">
+      body {
+        margin: 0;
+      }
+      #container {
+        position: absolute;
+        
+        top: 0%;
+        bottom: 0%;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <title>Sigma test</title>
+  </head>
+  <body>
+    <div id="debug">haha</div>
+    <div id="container">lol</div>
+    <script src="./js/debug.js"></script>
+    <script src="./js/jquery-2.1.3.min.js"></script>
+    <script src="./js/sigma.min.js"></script>
+    <script src="./js/xhr.js"></script>
+    <script src="./js/draw.js"></script>
+    <script>
+      var backend = 'http://deel.tk/mic/';
+      var s = new sigma('container');
+      s.settings({
+        font: 'Courier',
+        
+        labelSize: "proportional",
+        labelSizeRatio: 4,
+        labelThreshold: 2,
+        
+        edgeColor: 'source',// 'default'/'target'
+        defaultEdgeColor: 'grey',
+        
+        defaultLabelColor: '#000',
+        defaultNodeColor: '#f00',
+        defaultLabelSize: 20,
+        
+        zoomMin: 0.01,
+        zoomMax: 4,
+        mouseZoomDuration: 100,
+        doubleClickZoomDuration: 100,
+        
+        enableHovering: true,
+        enableEdgeHovering: true,
+        
+        //doubleClickEnabled: false
+      });
+      s.bind('clickNode', function(e) {
+        console.log('clickNode '+e.data.node.id);
+      });
+      s.bind('clickStage', function(e) {
+        console.log('clickStage');
+      });
+      
+      var current_node = '43';
+      
+      get(backend+'?id_node='+current_node, function(json) {
+        draw(s, JSON.parse(json));
+      });
+    </script>
+    
+  </body>
+</html>
