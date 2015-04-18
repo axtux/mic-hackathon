@@ -42,6 +42,10 @@ function do_upload($field, $name, $description) {
 	return $id;
 }
 
+function is_previewable($ext) {
+	return in_array($ext, explode(',', 'pdf,doc,xls,ppt,docx,xlsx,pptx,jpg,png,jpeg,gif,odt,html'));
+}
+
 function get_upload($name, $absolute=true) {
 	return ($absolute ? $_SERVER['DOCUMENT_ROOT'] : '').UPLOAD_DIR.'/'.$name;
 }
