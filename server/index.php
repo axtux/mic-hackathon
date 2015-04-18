@@ -92,14 +92,14 @@ case 'POST':
 	}
 	break;
 case 'DELETE':
-	if (isset($_POST['alpha'])) {
+	if (isset($_GET['alpha'])) {
 		$sql = 'DELETE FROM edge WHERE alpha=? AND beta=?';
 		$st = $db->prepare($sql);
-		$st->execute(array($_POST['alpha'], $_POST['beta']));
+		$st->execute(array($_GET['alpha'], $_GET['beta']));
 	}
 	else {
 		$st = $db->prepare('UPDATE node SET is_deleted=1 WHERE id_node=?');
-		$st->execute(array($_POST['id_node']));
+		$st->execute(array($_GET['id_node']));
 	}
 }
 
