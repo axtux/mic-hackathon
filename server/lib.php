@@ -2,8 +2,7 @@
 require_once('config.php');
 
 function current_user() {
-	//FIXME
-	return 4;
+	return $_SESSION['user'];
 }
 
 function create_node($name, $description) {
@@ -57,6 +56,26 @@ function display_upform($name) {
 	<input type="submit" name="upload" value="Envoyer" />
 </form>
 <?php
+}
+
+function redirect($url) {
+	header('Location: '.$url);
+	exit();
+}
+
+function do_login($email, $hashed_pass, $challenge) {
+	global $db;
+	if ($_SESSION['ch'] == $challenge) {
+		$sql = 'SELECT id_node FROM profile WHERE '.
+			'SHA1(CONCAT(password, LOWER(email), ?))=? AND email=?';
+		$st = $db->prepare($sql);
+		$st->execute(array($challenge, $hashed_pass, $email));
+		if ($st->rowCount()) {
+			$_SESSION['user'] = $st->fetch()['id_node'];
+			redirect('index.html');
+		}
+	}
+	die('login failed');
 }
 
 session_start();

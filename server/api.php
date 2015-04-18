@@ -61,7 +61,9 @@ case 'GET':
 	echo json_encode($st->fetchAll());
 	break;
 case 'POST':
-	if (isset($_POST['relation'])) {
+	if (isset($_POST['ml']))
+		do_login($_POST['ml'], $_POST['pw'], $_SESSION['ch']);
+	else if (isset($_POST['relation'])) {
 		$sql = 'UPDATE edge SET relation=? WHERE alpha=? AND beta=?';
 		$st = $db->prepare($sql);
 		$st->execute(array($_POST['relation'], $_POST['alpha'], $_POST['beta']));
