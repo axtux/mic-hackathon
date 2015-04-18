@@ -1,16 +1,11 @@
 <?php
-require_once('config.php');
+require_once('lib.php');
 $fields = array(
 	'node' => array('name', 'description'),
 	'profile' => array('email'),
 	'gps' => array('latitude', 'longitude'),
 	'url' => array('link'),
 	'file'); //test this
-
-function current_user() {
-	//FIXME
-	return 4;
-}
 
 function fromPost($k) {
 	return $_POST[$k];
@@ -21,18 +16,6 @@ function doUpdate() {
 	$st = $db->prepare('INSERT INTO edge VALUES(?, '.doInsert().', \'improvement\')');
 	$st->execute(array($_POST['id_node']));
 }
-
-/*function doUpdate() {
-	global $db, $fields;
-	foreach ($fields as $k=>$v) {
-		if (in_array($v[0], array_keys($_POST))) {
-			$sql = "UPDATE $k SET ".join('=?, ', $v).'=? WHERE id_node=?';
-			$st = $db->prepare($sql);
-			$st->execute(array_map('fromPost', $v)+array($_POST['id_node']));
-			break; //next table
-		}
-	}
-}*/
 
 function doInsert() {
 	global $db, $fields;
