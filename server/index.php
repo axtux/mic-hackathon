@@ -17,15 +17,15 @@ function fromPost($k) {
 }
 
 function doUpdate() {
-	//TODO just an insert and a link
-	$st = $db->prepare('INSERT INTO edge VALUES(?, '.doInsert().')');
+	global $db;
+	$st = $db->prepare('INSERT INTO edge VALUES(?, '.doInsert().', \'improvement\')');
 	$st->execute(array($_POST['id_node']));
 }
 
 /*function doUpdate() {
 	global $db, $fields;
 	foreach ($fields as $k=>$v) {
-		if (in_array($v[0], $_POST)) {
+		if (in_array($v[0], array_keys($_POST))) {
 			$sql = "UPDATE $k SET ".join('=?, ', $v).'=? WHERE id_node=?';
 			$st = $db->prepare($sql);
 			$st->execute(array_map('fromPost', $v)+array($_POST['id_node']));
@@ -36,15 +36,19 @@ function doUpdate() {
 
 function doInsert() {
 	global $db, $fields;
+	$st = $db->prepare('INSERT INTO node(name, description, owner) VALUES(?, ?, ?)');
+	$st->execute(array($_POST['name'], $_POST['description'], current_user()));
+	$id = $db->lastInsertId();
 	foreach ($fields as $k=>$v) {
-		if (in_array($v[0], $_POST)) {
+		if (in_array($v[0], array_keys($_POST)) && $k!='node') {
 			$sql = "INSERT INTO $k(".join(', ', array('id_node')+$v).') VALUES(';
 			$sql .= join(', ', array_fill(0, sizeof($v), '?')).')';
 			$st = $db->prepare($sql);
-			$st->execute(array($_POST['id_node'])+array_map('fromPost', $v));
+			$st->execute(array($id)+array_map('fromPost', $v));
 			return $db->lastInsertId();
 		}
 	}
+	return $id;
 }
 
 header('Content-Type: application/json');
@@ -69,7 +73,7 @@ case 'POST':
 	if (isset($_POST['relation'])) {
 		$sql = 'UPDATE edge SET relation=? WHERE alpha=? AND beta=?';
 		$st = $db->prepare($sql);
-		$st->execute(array($_POST['alpha'], $_POST['beta']));
+		$st->execute(array($_POST['relation'], $_POST['alpha'], $_POST['beta']));
 		if (! $st->rowCount()) {
 			$sql = 'INSERT INTO edge VALUES(?, ?, ?)';
 			$st = $db->prepare($sql);
@@ -102,6 +106,3 @@ case 'DELETE':
 		$st->execute(array($_GET['id_node']));
 	}
 }
-
-/*foreach ($db->query('SELECT * FROM node') as $r)
-	echo json_encode($r);*/
