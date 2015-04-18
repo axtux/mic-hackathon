@@ -40,25 +40,29 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); //FIXME
 switch ($_SERVER['REQUEST_METHOD']) {
 case 'GET':
-	if (isset($_GET['search'])) {
-		$st = $db->prepare('SELECT id_node, name FROM node WHERE name LIKE ?');
-		$st->execute(array($_GET['search'].'%'));
-	}
+	if (isset($_GET['logout']))
+		$_SESSION = array();
 	else {
-		$id_node = (int)$_GET['id_node'];
-		$sql = 'SELECT y.* FROM ('.
-			'SELECT NULL AS alpha, NULL AS beta, NULL AS relation, x.* '.
-			'FROM bignode x WHERE id_node=? UNION ALL '.
-			'SELECT * FROM edge INNER JOIN bignode x ON '.
-			'alpha=x.id_node WHERE beta=? UNION ALL '.
-			'SELECT * FROM edge INNER JOIN bignode x ON '.
-			'beta=x.id_node WHERE alpha=?'.
-			') y INNER JOIN profile u ON ?=u.id_node ';
-			//'WHERE y.is_deleted=u.is_omniscient';
-		$st = $db->prepare($sql);
-		$st->execute(array($id_node, $id_node, $id_node, current_user()));
+		if (isset($_GET['search'])) {
+			$st = $db->prepare('SELECT id_node, name FROM node WHERE name LIKE ?');
+			$st->execute(array($_GET['search'].'%'));
+		}
+		else {
+			$id_node = (int)$_GET['id_node'];
+			$sql = 'SELECT y.* FROM ('.
+				'SELECT NULL AS alpha, NULL AS beta, NULL AS relation, x.* '.
+				'FROM bignode x WHERE id_node=? UNION ALL '.
+				'SELECT * FROM edge INNER JOIN bignode x ON '.
+				'alpha=x.id_node WHERE beta=? UNION ALL '.
+				'SELECT * FROM edge INNER JOIN bignode x ON '.
+				'beta=x.id_node WHERE alpha=?'.
+				') y'; //INNER JOIN profile u ON ?=u.id_node ';
+				//'WHERE y.is_deleted=u.is_omniscient';
+			$st = $db->prepare($sql);
+			$st->execute(array($id_node, $id_node, $id_node));//, current_user()));
+		}
+		echo json_encode($st->fetchAll());
 	}
-	echo json_encode($st->fetchAll());
 	break;
 case 'POST':
 	if (isset($_POST['ml']))

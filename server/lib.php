@@ -2,7 +2,7 @@
 require_once('config.php');
 
 function current_user() {
-	return $_SESSION['user'];
+	return isset($_SESSION['user']) ? $_SESSION['user'] : 0;
 }
 
 function create_node($name, $description) {
