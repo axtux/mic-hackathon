@@ -1,6 +1,6 @@
 <?php
   session_start();
-  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : ('User '.$_SESSION['user']);
+  $login = (empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
