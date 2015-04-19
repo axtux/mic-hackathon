@@ -128,7 +128,7 @@ function add_searched_data(container, node) {
   div.className = 'search-result';
   div.textContent = node.name;
   container.appendChild(div);
-  div.onclick = (function(id) {
+  div.ondblclick = (function(id) {
     view(id);
     console.log('Clicked '+id);
   })(node.id_node);
