@@ -1,23 +1,32 @@
 <?php
 require_once('lib.php');
 $_SESSION['ch'] = $ch = md5(time().$_SERVER['REMOTE_ADDR'].'secret!');
-echo $ch; //FIXME
-?>
-<script type="text/javascript" src="js/sha1.js"></script>
-<form method="post" action="api.php" onsubmit="dochap();">
-	<p><label>E-mail : <input type="email" name="ml" id="e" /></label></p>
-	<p><label>Password : <input type="password" name="pw" id="p" /></label></p>
-	<p><button type="submit">Login</button></p>
+?><!DOCTYPE html>
+<!--Taken from http://getbootstrap.com/examples/signin/-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Signin Template for Bootstrap</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/signin.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<form class="form-signin" action="api.php" method="post" onsubmit="dochap('<?=$ch?>');">
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<label for="e" class="sr-only">Email address</label>
+	<input name="ml" type="email" id="e" class="form-control" placeholder="Email address" required autofocus>
+	<label for="p" class="sr-only">Password</label>
+	<input name="pw" type="password" id="p" class="form-control" placeholder="Password" required>
+	<div class="checkbox"><label><input type="checkbox" value="remember-me"> Remember me</label></div><!--TODO-->
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
-<script type="text/javascript">
-function $i(id) {
-	return document.getElementById(id);
-}
-function dochap() {
-	var hp = sha1($i('p').value);
-	var ch = '<?=$ch?>';
-	$i('p').value = sha1(hp+$i('e').value.toLowerCase()+ch);
-	alert($i('p').value ); //FIXME
-	return true;
-}
-</script>
+<script type="text/javascript" src="js/sha1.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</div>
+</body>
+</html>
