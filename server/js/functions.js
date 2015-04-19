@@ -127,12 +127,11 @@ function add_searched_data(container, node) {
   var div = document.createElement('div');
   div.className = 'search-result';
   div.textContent = node.name;
+  container.appendChild(div);
   div.onclick = (function(id) {
     view(id);
     console.log('Clicked '+id);
   })(node.id_node);
-  
-  container.appendChild(div);
 }
 
 function get(url, callback) {
