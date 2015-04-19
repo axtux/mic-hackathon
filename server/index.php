@@ -1,6 +1,6 @@
 <?php
-  session_start();
-  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user'];
+require_once('lib.php');
+$login = current_user() ? '' : '<a href="./login.php">Login</a>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
