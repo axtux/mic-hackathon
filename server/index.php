@@ -208,7 +208,7 @@ $login = current_user() ? '' : '<a href="login.php">Login</a>';
         
         s = new sigma('sigma_container');
         s.settings({
-          font: 'Courier',
+          //font: 'Verdana',
           
           labelSize: "proportional",
           labelSizeRatio: 4,
