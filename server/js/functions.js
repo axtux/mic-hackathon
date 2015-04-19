@@ -1,4 +1,5 @@
 var XHR_TIMEOUT = 2000;
+var UP_DIR = './uploads/';
 
 function iloaded() {
   document.getElementById('form-sender').onload = null;
@@ -68,27 +69,36 @@ function view(node) {
   }
   
   if(node.id_node) {
+    viewer.innerHTML = '';
+    sidebar('viewer');
+    
+    add_viewed_data(viewer, 'ID', node.id_node);
+    add_viewed_data(viewer, 'Name', node.name);
+    add_viewed_data(viewer, 'Description', node.description);
     if(node.email) {
-      sidebar('form', 'profile');
-      form.email.value = node.email;
+      add_viewed_data(viewer, 'Email', node.email);
     } else if(node.link) {
-      sidebar('form', 'link');
-      form.link.value = node.link;
+      add_viewed_data(viewer, 'Link', '<a href="'+node.link+'">'+node.link+'</a>');
     } else if(node.path) {
-      sidebar('form', 'file');
       // make preview
-      
+      add_viewed_data(viewer, 'Link', '<a href="'+UP_DIR+node.path+'">'+UP_DIR+node.path+'</a>');
     } else if(node.latitude && node.longitude) {
       sidebar('form', 'gps');
-      form.latitude.value = node.latitude;
-      form.longitude.value = node.longitude;
-    } else {
-      sidebar('form', 'data');
+      add_viewed_data(viewer, 'Latitude', node.latitude);
+      add_viewed_data(viewer, 'Longitude', node.longitude);
     }
-    form.id_node.value = node.id_node;
-    form.name.value = node.name;
-    form.description.value = node.description;
   }
+}
+function add_viewed_data(container, name, data) {
+  var fieldset = document.createElement('fieldset');
+  var legend = document.createElement('legend');
+  legend.textContent = name;
+  var div = document.createElement('div');
+  div.innerHTML = data;
+  
+  fieldset.addNode(legend);
+  fieldset.addNode(div);
+  container.addNode(fieldset);
 }
 
 function get(url, callback) {
