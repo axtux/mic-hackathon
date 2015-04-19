@@ -130,7 +130,7 @@ function add_searched_data(container, node) {
   div.setAttribute('data-id', node.id_node);
   div.ondblclick = function() {
     view(this.getAttribute('data-id'));
-    console.log('Dbl clicked '+id);
+    console.log('Dbl clicked '+this.getAttribute('data-id'));
   };
   container.appendChild(div);
 }
