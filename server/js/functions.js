@@ -30,6 +30,7 @@ function sidebar(action, type) {
 function view(node) {
   get(backend+'?id_node='+current_node, function(json) {
     nodes = JSON.parse(json);
+    s.graph.clear();
     draw(s, nodes);
   });
 }
