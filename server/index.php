@@ -1,6 +1,6 @@
 <?php
   session_start();
-  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user'];
+  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : ('User '.current_user());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -231,16 +231,12 @@
         });
         s.bind('clickNode', function(e) {
           current_node = e.data.node.id;
-          view(current_node);
+          sideview(current_node);
         });
         s.bind('clickStage', function(e) {
           emptyForm(document.getElementById('form'));
         });
         
-        get(backend+'?id_node='+current_node, function(json) {
-          nodes = JSON.parse(json);
-          draw(s, nodes);
-        });
       };
       
     </script>

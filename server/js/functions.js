@@ -27,6 +27,13 @@ function sidebar(action, type) {
   }
 }
 
+function view(node) {
+  get(backend+'?id_node='+current_node, function(json) {
+    nodes = JSON.parse(json);
+    draw(s, nodes);
+  });
+}
+
 function edit(node) {
   var form = document.getElementById('form');
   for(var i = 0; i < nodes.length; ++i) {
@@ -59,7 +66,7 @@ function edit(node) {
   }
 }
 
-function view(node) {
+function sideview(node) {
   var viewer = document.getElementById('viewer');
   for(var i = 0; i < nodes.length; ++i) {
     if(nodes[i].id_node == node) {
