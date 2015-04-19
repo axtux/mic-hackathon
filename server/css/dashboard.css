@@ -103,8 +103,9 @@ body {
   display: block;
 }
 
-.search-result :hover {
+.search-result:hover {
   background-color: #eee;
+  cursor: pointer;
 }
 
 .footer {
