@@ -46,7 +46,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><?=$login?></li>
+            <li><?php $login ?></li>
             <!--li><a href="./help.html">Help</a></li-->
           </ul>
           <form class="navbar-form navbar-right" onsubmit="return search(this);">
