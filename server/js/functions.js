@@ -94,6 +94,8 @@ function sideview(node) {
       add_viewed_data(viewer, 'Latitude', node.latitude);
       add_viewed_data(viewer, 'Longitude', node.longitude);
     }
+  } else {
+    console.log('no node !');
   }
 }
 function add_viewed_data(container, name, data) {
