@@ -69,13 +69,14 @@ function edit(node) {
 
 function sideview(node) {
   var viewer = document.getElementById('viewer');
+  /* already a node
   for(var i = 0; i < nodes.length; ++i) {
     if(nodes[i].id_node == node) {
       node = nodes[i];
       break;
     }
   }
-  
+  //*/
   if(node.id_node) {
     viewer.innerHTML = '';
     sidebar('viewer');
@@ -194,6 +195,7 @@ function post(action, x, y, comment) {
 }
 
 function draw(sigma, nodes) {
+  sideview(nodes[0]);
   sigma.graph.addNode({
     // Main attributes:
     id: nodes[0]['id_node'].toString(),
