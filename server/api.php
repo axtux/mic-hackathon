@@ -80,7 +80,7 @@ case 'POST':
 	else {
 		$db->beginTransaction();
 		try {
-			if (isset($_FILES['file']['tmp_name'])) {
+			if (isset($_FILES['file']) && $_FILES['file']['error']!=4) {
 				$id = do_upload('file', $_POST['name'], $_POST['description']);
 				if (!empty($_POST['id_node']))
 					add_improvement($_POST['id_node'], $id);
