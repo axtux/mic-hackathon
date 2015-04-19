@@ -72,7 +72,7 @@ function do_login($email, $hashed_pass, $challenge) {
 		$st->execute(array($challenge, $hashed_pass, $email));
 		if ($st->rowCount()) {
 			$_SESSION['user'] = $st->fetch()['id_node'];
-			redirect('index.html');
+			redirect('index.php');
 		}
 	}
 	die('login failed');

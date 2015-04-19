@@ -1,6 +1,6 @@
 <?php
   session_start();
-  $login = (empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user']);
+  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><?php $login ?></li>
+            <li><?=$login?></li>
             <!--li><a href="./help.html">Help</a></li-->
           </ul>
           <form class="navbar-form navbar-right" onsubmit="return search(this);">
