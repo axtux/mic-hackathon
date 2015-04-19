@@ -26,10 +26,10 @@ function do_insert() {
 	$id = create_node($_POST['name'], $_POST['description']);
 	foreach ($fields as $k=>$v) {
 		if (!empty($_POST[$v[0]]) && $k!='node') {
-			$sql = "INSERT INTO $k(".join(', ', array('id_node')+$v).') VALUES(';
-			$sql .= join(', ', array_fill(0, sizeof($v), '?')).')';
+			$sql = "INSERT INTO $k(".join(', ', array_merge(array('id_node'),$v)).') VALUES(';
+			$sql .= join(', ', array_fill(0, sizeof($v)+1, '?')).')';
 			$st = $db->prepare($sql);
-			$st->execute(array($id)+array_map('read_post', $v));
+			$st->execute(array_merge(array($id),array_map('read_post', $v)));
 			return $db->lastInsertId();
 		}
 	}
@@ -80,7 +80,7 @@ case 'POST':
 	else {
 		$db->beginTransaction();
 		try {
-			if (isset($_FILES['file'])) {
+			if (isset($_FILES['file']['tmp_name'])) {
 				$id = do_upload('file', $_POST['name'], $_POST['description']);
 				if (!empty($_POST['id_node']))
 					add_improvement($_POST['id_node'], $id);
