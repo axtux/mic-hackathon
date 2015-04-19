@@ -1,8 +1,7 @@
 <?php
 require_once('lib.php');
-$login = current_user() ? '' : '<a href="./login.php">Login</a>';
-?>
-<!DOCTYPE html>
+$login = current_user() ? '' : '<a href="login.php">Login</a>';
+?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -91,23 +90,23 @@ $login = current_user() ? '' : '<a href="./login.php">Login</a>';
                 <label for="message-text" class="control-label">Description :</label>
                 <textarea class="form-control" name="description"></textarea>
               </div>
-              <div class = "form-group" id="profile">
+              <div class="form-group" id="profile">
                 <label for="message-text" class="control-label">E-mail :</label>
                 <input type="text" class="form-control" name="email">
               </div>
-              <div class = "form-group" id="link">
+              <div class="form-group" id="link">
                 <label for="message-text" class="control-label">Link :</label>
                 <input type="text" class="form-control" name="link">
               </div>
-              <div class = "form-group" id="file">
+              <div class="form-group" id="file">
                 <label for="message-text" class="control-label">File :</label>
                 <input type="file" class="control-label" name="file">
               </div>
               <div id="gps">
-                <div class = "form-group">
+                <div class="form-group">
                   <button type="button" class="btn btn-info" onclick="getLocation()">Locate your device</button>
                 </div>
-                <div class = "form-group">
+                <div class="form-group">
                   <label for="message-text" class="control-label">Latitude :</label>
                   <input type="text" class="form-control" name="latitude" id="lat">
                 </div>
@@ -117,7 +116,7 @@ $login = current_user() ? '' : '<a href="./login.php">Login</a>';
                 </div>
               </div>
               <div id="edge">
-                <div class = "form-group">
+                <div class="form-group">
                   <label for="message-text" class="control-label">Source :</label>
                   <input type="text" class="form-control" name="alpha">
                 </div>
@@ -134,7 +133,52 @@ $login = current_user() ? '' : '<a href="./login.php">Login</a>';
               <br><br>
             </form>
             <div id="preview">
-              
+              <div class="form-group" id="preview-data">
+                <fieldset>
+                  <legend>Personalia:</legend>
+                  <div id="preview-name">
+                </fieldset>
+                <label for="recipient-name" class="control-label">Name :</label>
+                <input type="text" class="form-control" name="name">
+                <label for="message-text" class="control-label">Description :</label>
+                <textarea class="form-control" name="description"></textarea>
+              </div>
+              <div class="form-group" id="preview-profile">
+                <label for="message-text" class="control-label">E-mail :</label>
+                <input type="text" class="form-control" name="email">
+              </div>
+              <div class="form-group" id="preview-link">
+                <label for="message-text" class="control-label">Link :</label>
+                <input type="text" class="form-control" name="link">
+              </div>
+              <div class="form-group" id="preview-file">
+                <label for="message-text" class="control-label">File :</label>
+                <input type="file" class="control-label" name="file">
+              </div>
+              <div class="form-group" id="preview-gps">
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Latitude :</label>
+                  <input type="text" class="form-control" name="latitude" id="lat">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Longitude :</label>
+                  <input type="text" class="form-control" name="longitude" id="lon">
+                </div>
+              </div>
+              <div id="edge">
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Source :</label>
+                  <input type="text" class="form-control" name="alpha">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Target :</label>
+                  <input type="text" class="form-control" name="beta">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Relation :</label>
+                  <input type="text" class="form-control" name="relation">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -186,16 +230,12 @@ $login = current_user() ? '' : '<a href="./login.php">Login</a>';
         });
         s.bind('clickNode', function(e) {
           current_node = e.data.node.id;
-          view(current_node);
+          sideview(current_node);
         });
         s.bind('clickStage', function(e) {
           emptyForm(document.getElementById('form'));
         });
         
-        get(backend+'?id_node='+current_node, function(json) {
-          nodes = JSON.parse(json);
-          draw(s, nodes);
-        });
       };
       
     </script>

@@ -75,10 +75,16 @@ body {
 #file,
 #gps,
 #edge,
+#preview-profile,
+#preview-link,
+#preview-file,
+#preview-gps,
+#preview-edge,
 #add,
 #form,
 #preview,
-.edge #data {
+.edge #data,
+.edge #preview-data {
   display: none;
 }
 .profile #profile,
@@ -86,6 +92,11 @@ body {
 .file #file,
 .gps #gps,
 .edge #edge,
+.profile #preview-profile,
+.link #preview-link,
+.file #preview-file,
+.gps #preview-gps,
+.edge #preview-edge,
 .add #add,
 .form #form,
 .preview #preview {
