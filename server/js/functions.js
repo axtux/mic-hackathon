@@ -55,6 +55,7 @@ function edit(node) {
 }
 
 function view(node) {
+  var viewer = document.getElementById('viewer');
   for(var i = 0; i < nodes.length; ++i) {
     if(nodes[i].id_node == node) {
       node = nodes[i];
