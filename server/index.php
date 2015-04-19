@@ -37,12 +37,12 @@
           <ul class="nav navbar-nav navbar-left">
             <li><img src="./android-icon-48x48.png"></li>
             <li><a class="navbar-brand" href="./">raphisy</a></li>
-            <li><a class="navbar-brand" href="javascript:document.getElementById('chooser').className='add';">Add node</a></li>
-          <ul>
+            <li><a class="navbar-brand" href="#add" onclick="return sidebar('add');"><span class="glyphicon glyphicon-plus" ></span>Add node</a></li>
+          </ul>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Profile</a></li>
+            <li><a href="#">Login</a></li>
             <!--li><a href="./help.html">Help</a></li-->
           </ul>
           <form class="navbar-form navbar-right" onsubmit="return search(this);">
@@ -55,20 +55,32 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 sidebar">
-          <div id="chooser">
-            <form id="form" onsubmit="return send_form();" >
+          <div id="chooser" >
+            <div id="add" class="btn-group">
+              <button class="btn btn-default" onclick="sidebar('form', 'data');">
+                <span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>
+                <span class="glyphicon-class">Data</span>
+              </button>
+              <button class="btn btn-default" onclick="sidebar('form', 'profile');">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <span class="glyphicon-class">Profile</span>
+              </button>
+              <button class="btn btn-default" onclick="sidebar('form', 'link');">
+                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                <span class="glyphicon-class">Link</span>
+              </button>
+              <button class="btn btn-default" onclick="sidebar('form', 'file');">
+                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                <span class="glyphicon-class">File</span>
+              </button>
+              <button class="btn btn-default" onclick="sidebar('form', 'gps');">
+                <span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+                <span class="glyphicon-class">GPS Coordinates</span>
+              </button>
+            </div>
+            <iframe name="form-sender" id="form-sender" style="display: none;" onload="iloaded();"></iframe>
+            <form id="form" method="post" action="http://deel.tk/mic/api.php" target="form-sender" enctype="multipart/form-data">
               <input type="hidden" name="id_node" value="-1">
-              <div class="form-group">
-                <label for="message-text" class="control-label">Type :</label>
-                <select class="form-control" onclick="return filter_fields();" name="type" >
-                  <option selected>Data</option>
-                  <option>Profile</option>
-                  <option>Link</option>
-                  <option>File</option>
-                  <option>GPS</option>
-                  <option>Edge</option>
-                </select>
-              </div>
               <div class="form-group" id="data">
                 <label for="recipient-name" class="control-label">Name :</label>
                 <input type="text" class="form-control" name="name">
@@ -113,9 +125,12 @@
                   <input type="text" class="form-control" name="relation">
                 </div>
               </div>
-              <button type="button" class="btn btn-primary" onclick="return send_form();">Create/Update</button>
+              <button type="submit" class="btn btn-primary" >Create/Update</button>
               <br><br>
             </form>
+            <div id="preview">
+              
+            </div>
           </div>
         </div>
         <div class="col-md-6 no-padding">
@@ -164,7 +179,8 @@
           enableEdgeHovering: true
         });
         s.bind('clickNode', function(e) {
-          edit(e.data.node.id, document.getElementById('form'));
+          current_node = e.data.node.id;
+          view(current_node);
         });
         s.bind('clickStage', function(e) {
           emptyForm(document.getElementById('form'));
