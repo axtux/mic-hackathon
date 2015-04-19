@@ -103,6 +103,10 @@ body {
   display: block;
 }
 
+.search-result :hover {
+  background-color: #eee;
+}
+
 .footer {
   background-color: #f5f5f5;
 }
