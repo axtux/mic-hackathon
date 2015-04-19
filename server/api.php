@@ -36,7 +36,7 @@ function do_insert() {
 	return $id;
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf8');
 header('Access-Control-Allow-Origin: *'); //FIXME
 switch ($_SERVER['REQUEST_METHOD']) {
 case 'GET':
@@ -61,7 +61,7 @@ case 'GET':
 			$st = $db->prepare($sql);
 			$st->execute(array($id_node, $id_node, $id_node));//, current_user()));
 		}
-		echo json_encode($st->fetchAll());
+		die(json_encode($st->fetchAll()));
 	}
 	break;
 case 'POST':
@@ -75,6 +75,7 @@ case 'POST':
 			$sql = 'INSERT INTO edge VALUES(?, ?, ?)';
 			$st = $db->prepare($sql);
 			$st->execute(array($_POST['alpha'], $_POST['beta'], $_POST['relation']));
+			die(json_encode(array('status'=>'ok', 'id'=>$db->lastInsertId())));
 		}
 	}
 	else {
@@ -84,21 +85,25 @@ case 'POST':
 				$id = do_upload('file', $_POST['name'], $_POST['description']);
 				if (!empty($_POST['id_node']))
 					add_improvement($_POST['id_node'], $id);
+				echo json_encode(array('status'=>'ok', 'id'=>$id));
 			}
-			else if (!empty($_POST['id_node']))
+			else if (!empty($_POST['id_node'])) {
 				do_update();
+				echo json_encode(array('status'=>'ok'));
+			}
 			else
-				do_insert();
+				echo json_encode(array('status'=>'ok', 'id'=>do_insert()));
 			$db->commit();
 		}
 		catch (UploadException $e) {
 			$db->rollBack();
-			die($e);
+			echo json_encode(array('status'=>'error', 'reason'=>$e->getMessage()));
 		}
-		catch (PDOException $pe) {
+		catch (PDOException $e) {
 			$db->rollBack();
-			die('error');
+			echo json_encode(array('status'=>'error'));
 		}
+		die();
 	}
 	break;
 case 'DELETE':
@@ -112,3 +117,4 @@ case 'DELETE':
 		$st->execute(array($_GET['id_node']));
 	}
 }
+echo json_encode(array('status'=>'ok'));
