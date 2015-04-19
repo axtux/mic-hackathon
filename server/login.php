@@ -16,6 +16,9 @@ $_SESSION['ch'] = $ch = md5(time().$_SERVER['REMOTE_ADDR'].'secret!');
 </head>
 <body>
 <div class="container">
+<div class="alert alert-info" role="alert">
+	Demo account : you@me.com / bonjour
+</div>
 <form class="form-signin" action="api.php" method="post" onsubmit="dochap('<?=$ch?>');">
 	<h2 class="form-signin-heading">Please sign in</h2>
 	<label for="e" class="sr-only">Email address</label>
