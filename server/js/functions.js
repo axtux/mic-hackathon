@@ -107,9 +107,9 @@ function add_viewed_data(container, name, data) {
   var div = document.createElement('div');
   div.innerHTML = data;
   
-  fieldset.addNode(legend);
-  fieldset.addNode(div);
-  container.addNode(fieldset);
+  fieldset.appendChild(legend);
+  fieldset.appendChild(div);
+  container.appendChild(fieldset);
 }
 
 function get(url, callback) {
