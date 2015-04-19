@@ -1,6 +1,6 @@
 <?php
   session_start();
-  $login = (empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user']);
+  $login = empty($_SESSION['user']) ? '<a href="./login.php">Login</a>' : 'User '.$_SESSION['user'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><?php $login ?></li>
+            <li><?=$login?></li>
             <!--li><a href="./help.html">Help</a></li-->
           </ul>
           <form class="navbar-form navbar-right" onsubmit="return search(this);">
@@ -82,9 +82,9 @@
                 <span class="glyphicon-class">GPS Coordinates</span>
               </button>
             </div>
-            <iframe name="form-sender" id="form-sender" style="display: none;" onload="iloaded();"></iframe>
-            <form id="form" method="post" action="http://deel.tk/mic/api.php" target="form-sender" enctype="multipart/form-data">
-              <input type="hidden" name="id_node" value="-1">
+            <iframe name="form-sender" id="form-sender" style="display: none;" ></iframe>
+            <form id="form" method="post" action="http://deel.tk/mic/api.php" target="form-sender" enctype="multipart/form-data" onsubmit="return submit_form(this);">
+              <input type="hidden" name="id_node" >
               <div class="form-group" id="data">
                 <label for="recipient-name" class="control-label">Name :</label>
                 <input type="text" class="form-control" name="name">
