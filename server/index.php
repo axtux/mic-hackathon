@@ -201,12 +201,13 @@
     <script>
       var nodes;// = [{"alpha":null,"beta":null,"relation":null,"id_node":"43","name":"EDO","description":"EDO","created_on":"2015-04-18 07:55:34","is_deleted":"1","owner":"42","email":null,"link":null,"path":null,"is_previewable":null,"latitude":null,"longitude":null},{"alpha":"47","beta":"43","relation":"has","id_node":"47","name":"Analyse B","description":"Cour de math","created_on":"2015-04-18 08:18:35","is_deleted":"0","owner":"42","email":null,"link":null,"path":null,"is_previewable":null,"latitude":null,"longitude":null},{"alpha":"50","beta":"43","relation":"applies","id_node":"50","name":"(x)''= ma","description":"<h1>Power of physics<\/h1>","created_on":"2015-04-18 09:10:13","is_deleted":"0","owner":"42","email":null,"link":null,"path":null,"is_previewable":null,"latitude":null,"longitude":null},{"alpha":"43","beta":"44","relation":"has","id_node":"44","name":"Exo-edo","description":"Methode pour calculer les edo","created_on":"2015-04-18 07:57:13","is_deleted":"0","owner":"42","email":null,"link":null,"path":"pouet.png","is_previewable":"1","latitude":null,"longitude":null},{"alpha":"43","beta":"45","relation":"requires","id_node":"45","name":"Polynome","description":"Polynome","created_on":"0000-00-00 00:00:00","is_deleted":"0","owner":"42","email":null,"link":null,"path":null,"is_previewable":null,"latitude":null,"longitude":null},{"alpha":"43","beta":"46","relation":"link","id_node":"46","name":"EDO-wiki","description":"Wiki-EDO","created_on":"2015-04-18 08:12:03","is_deleted":"0","owner":"42","email":null,"link":"http:\/\/fr.wikipedia.org\/wiki\/%C3%89quation_di","path":null,"is_previewable":null,"latitude":null,"longitude":null}];
       var current_node = '43';
+      var backend = 'http://deel.tk/mic/api.php';
+      var s;
         
       document.body.onload = function() {
         resize();
         
-        var backend = 'http://deel.tk/mic/api.php';
-        var s = new sigma('sigma_container');
+        s = new sigma('sigma_container');
         s.settings({
           font: 'Courier',
           
@@ -231,12 +232,12 @@
         });
         s.bind('clickNode', function(e) {
           current_node = e.data.node.id;
-          sideview(current_node);
+          view(current_node);
         });
         s.bind('clickStage', function(e) {
           emptyForm(document.getElementById('form'));
         });
-        
+        view(current_node);
       };
       
     </script>
