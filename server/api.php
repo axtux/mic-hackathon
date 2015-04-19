@@ -25,7 +25,7 @@ function do_insert() {
 	global $db, $fields;
 	$id = create_node($_POST['name'], $_POST['description']);
 	foreach ($fields as $k=>$v) {
-		if (in_array($v[0], array_keys($_POST)) && $k!='node') {
+		if (!empty($_POST[$v[0]]) && $k!='node') {
 			$sql = "INSERT INTO $k(".join(', ', array('id_node')+$v).') VALUES(';
 			$sql .= join(', ', array_fill(0, sizeof($v), '?')).')';
 			$st = $db->prepare($sql);
@@ -67,7 +67,7 @@ case 'GET':
 case 'POST':
 	if (isset($_POST['ml']))
 		do_login($_POST['ml'], $_POST['pw'], $_SESSION['ch']);
-	else if (isset($_POST['relation'])) {
+	else if (!empty($_POST['relation'])) {
 		$sql = 'UPDATE edge SET relation=? WHERE alpha=? AND beta=?';
 		$st = $db->prepare($sql);
 		$st->execute(array($_POST['relation'], $_POST['alpha'], $_POST['beta']));
@@ -82,10 +82,10 @@ case 'POST':
 		try {
 			if (isset($_FILES['file'])) {
 				$id = do_upload('file', $_POST['name'], $_POST['description']);
-				if (isset($_POST['id_node']))
+				if (!empty($_POST['id_node']))
 					add_improvement($_POST['id_node'], $id);
 			}
-			else if (isset($_POST['id_node']))
+			else if (!empty($_POST['id_node']))
 				do_update();
 			else
 				do_insert();
