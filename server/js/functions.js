@@ -68,7 +68,7 @@ function edit(node) {
 }
 
 function sideview(node) {
-  var viewer = document.getElementById('viewer');
+  var preview = document.getElementById('preview');
   /* already a node
   for(var i = 0; i < nodes.length; ++i) {
     if(nodes[i].id_node == node) {
@@ -78,23 +78,23 @@ function sideview(node) {
   }
   //*/
   if(node.id_node) {
-    viewer.innerHTML = '';
-    sidebar('viewer');
+    preview.innerHTML = '';
+    sidebar('preview');
     
-    add_viewed_data(viewer, 'ID', node.id_node);
-    add_viewed_data(viewer, 'Name', node.name);
-    add_viewed_data(viewer, 'Description', node.description);
+    add_viewed_data(preview, 'ID', node.id_node);
+    add_viewed_data(preview, 'Name', node.name);
+    add_viewed_data(preview, 'Description', node.description);
     if(node.email) {
-      add_viewed_data(viewer, 'Email', node.email);
+      add_viewed_data(preview, 'Email', node.email);
     } else if(node.link) {
-      add_viewed_data(viewer, 'Link', '<a href="'+node.link+'">'+node.link+'</a>');
+      add_viewed_data(preview, 'Link', '<a href="'+node.link+'">'+node.link+'</a>');
     } else if(node.path) {
       // make preview
-      add_viewed_data(viewer, 'Link', '<a href="'+UP_DIR+node.path+'">'+UP_DIR+node.path+'</a>');
+      add_viewed_data(preview, 'Link', '<a href="'+UP_DIR+node.path+'">'+UP_DIR+node.path+'</a>');
     } else if(node.latitude && node.longitude) {
       sidebar('form', 'gps');
-      add_viewed_data(viewer, 'Latitude', node.latitude);
-      add_viewed_data(viewer, 'Longitude', node.longitude);
+      add_viewed_data(preview, 'Latitude', node.latitude);
+      add_viewed_data(preview, 'Longitude', node.longitude);
     }
   } else {
     console.log('no node !');
