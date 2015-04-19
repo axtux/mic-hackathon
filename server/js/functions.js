@@ -100,6 +100,18 @@ function sideview(node) {
     console.log('no node !');
   }
 }
+function sidesearch(term) {
+  get(backend+'?search='+encodeURIComponent(term), function(json) {
+    nodes = JSON.parse(json);
+    var preview = document.getElementById('preview');
+    preview.innerHTML = '';
+    sidebar('preview');
+    
+    for(var i = 0; i < nodes.length; ++i) {
+      add_searched_data(preview, nodes[i]);
+    }
+  });
+}
 function add_viewed_data(container, name, data) {
   var fieldset = document.createElement('fieldset');
   var legend = document.createElement('legend');
@@ -110,6 +122,16 @@ function add_viewed_data(container, name, data) {
   fieldset.appendChild(legend);
   fieldset.appendChild(div);
   container.appendChild(fieldset);
+}
+function add_searched_data(container, node) {
+  var div = document.createElement('div');
+  div.className = 'search-result';
+  div.textContent = node.name;
+  div.onclick = (function(id) {
+    view(id);
+  })(node.id_node);
+  
+  container.appendChild(div);
 }
 
 function get(url, callback) {
