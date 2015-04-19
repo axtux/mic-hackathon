@@ -1,8 +1,12 @@
 var XHR_TIMEOUT = 2000;
 
 function iloaded() {
-  var frame = document.getElementById('form-sender');
-  console.log(frame.contentDocument.body.textContent);
+  document.getElementById('form-sender').onload = null;
+  console.log($('#form-sender').contents().find("body").html());
+}
+function submit_form(form) {
+  document.getElementById('form-sender').onload = iloaded;
+  return true;
 }
 function resize() {
   document.getElementById('sigma_container').style.height = $(window).height()-100+'px';
