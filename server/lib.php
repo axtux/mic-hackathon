@@ -49,15 +49,6 @@ function get_upload($name, $absolute=true) {
 	return ($absolute ? $_SERVER['DOCUMENT_ROOT'] : '').UPLOAD_DIR.'/'.$name;
 }
 
-function display_upform($name) {
-?><form method="post" enctype="multipart/form-data" action="?">
-	<input type="hidden" name="MAX_FILE_SIZE" value="<?=UPLOAD_MAX?>" />
-	<input type="file" name="<?=$name?>" />
-	<input type="submit" name="upload" value="Envoyer" />
-</form>
-<?php
-}
-
 function redirect($url) {
 	header('Location: '.$url);
 	exit();
@@ -72,7 +63,7 @@ function do_login($email, $hashed_pass, $challenge) {
 		$st->execute(array($challenge, $hashed_pass, $email));
 		if ($st->rowCount()) {
 			$_SESSION['user'] = $st->fetch()['id_node'];
-			redirect('index.html');
+			redirect('index.php');
 		}
 	}
 	die('login failed');
