@@ -1,0 +1,5 @@
+Use an existing library to prevent XSS
+Add the missing "original name" field in file
+Find a way to display more nodes
+Implement edge creation
+Display edge labels
